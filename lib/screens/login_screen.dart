@@ -69,8 +69,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     child: const Text('Login'),
                     onPressed: () {
-                      print(_nameController.text);
-                      print(_passwordController.text);
+                      // print(_nameController.text);
+                      // print(_passwordController.text);
                     },
                   )),
               Row(
