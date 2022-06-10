@@ -10,39 +10,56 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<Product> _products;
+  late Future<List<dynamic>> _products;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    // _products = ProductService().fetchProducts();
+    getProducts();
+  }
+
+  Future<List<dynamic>> getProducts() async {
     _products = ProductService().fetchProducts();
+    return await _products;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Home')),
-      body: FutureBuilder(
+      body: FutureBuilder<List<dynamic>>(
         future: _products,
-        builder: (context, snapshot) {
+        builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
             return Container(
               color: Colors.amber,
               // padding: EdgeInsets.all(10),
-              height: 50,
+              height: 200,
               width: double.infinity,
-              child: Card(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [Text('hello')],
-                ),
+              child: ListView.builder(
+                itemCount: snapshot.data!.length,
+                // scrollDirection: Axis.vertical,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(snapshot.data![index]['name'].toString()),
+                        Text(snapshot.data![index]['description'].toString()),
+                        Text(snapshot.data![index]['slug'].toString()),
+                        Text(snapshot.data![index]['price'].toString()),
+                        // Text(index.toString()),
+                      ],
+                    ),
+                  );
+                },
               ),
             );
           } else if (snapshot.hasError) {
-            return Text('${snapshot.hasError}');
+            return Text('${snapshot.error}');
           }
-
           return const CircularProgressIndicator();
         },
       ),

@@ -13,9 +13,15 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-        productName: json['productName'],
-        productSlug: json['productSlug'],
-        productPrice: json['productPrice'],
-        productDesc: json['productDesc']);
+        productName: json['name'],
+        productSlug: json['slug'],
+        productPrice: json['description'],
+        productDesc: json['price']);
+  }
+
+  static List<Product> productsFromSnapshot(List snapshot) {
+    return snapshot.map((e) {
+      return Product.fromJson(e);
+    }).toList();
   }
 }
